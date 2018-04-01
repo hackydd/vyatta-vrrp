@@ -156,6 +156,10 @@ sub keepalived_get_values {
     if ( !defined $priority ) {
       $priority = 100; # Default backup priority is 100 from RFC.
     }
+    my $native_ipv6 = $config->returnValue("native_ipv6");
+    if ( !defined $native_ipv6 ) {
+      $native_ipv6 = "false";
+    }
     my $address_owner = 0;
     $address_owner = 1 if ($priority == 255 && $use_vmac == 1);
     my $preempt = $config->returnValue("preempt");
@@ -281,7 +285,9 @@ sub keepalived_get_values {
 	$output .= "$group\n";
     }
     $output .= "\tpriority $priority\n";
-    $output .= "\tnative_ipv6\n";
+    if ( $native_ipv6 eq "false" ) {
+      $output .= "\tnative_ipv6\n";
+    }
     if ( $preempt eq "false" ) {
       $output .= "\tnopreempt\n";
     }

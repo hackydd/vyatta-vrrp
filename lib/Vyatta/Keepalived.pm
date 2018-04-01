@@ -241,6 +241,10 @@ sub vrrp_get_config {
     if (!defined $priority) {
 	$priority = 100;
     }
+    my $native_ipv6 = $config->returnOrigValue("native_ipv6");
+    if (!defined $native_ipv6) {
+        $native_ipv6 = "false";
+    }
     my $preempt = $config->returnOrigValue("preempt");
     if (!defined $preempt) {
 	$preempt = "true";
@@ -265,7 +269,7 @@ sub vrrp_get_config {
     } 
 
     return ($primary_addr, $priority, $preempt, $advert_int, $auth_type,
-	    $vmac_interface, @vips);
+	    $vmac_interface, $native_ipv6, @vips);
 }
 
 sub snoop_for_master {
